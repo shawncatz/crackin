@@ -11,6 +11,10 @@ module Crackin
         @git = ::Git.open(@options[:working])
       end
 
+      def add(options={})
+        @git.add(options)
+      end
+
       def log
         @git.log
       end

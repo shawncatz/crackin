@@ -11,8 +11,37 @@ module Crackin
     end
     subcommand 'init', 'intialize a directory for use with crackin' do
       def execute
+        puts "initializing"
         data = {crackin: Crackin::Config.defaults}.deep_stringify_keys
-        File.open(".crackin.yml", "w+") {|f| f.write(data.to_yaml)}
+        File.open(".crackin.yml", "w+") { |f| f.write(data.to_yaml) }
+        puts ".. configuration file .crackin.yml created."
+        unless File.exists?("CHANGELOG.md")
+          File.open("CHANGELOG.md", "w+") { |f| f.write("### Changelog\n") }
+          puts ".. changelog file CHANGELOG.md created."
+        end
+        puts ""
+        puts <<-VERSION
+Initialization is nearly complete.
+
+First, you will need to update the .crackin.yml file with the name of your project.
+Replace the <app> tokens in the file, with the name of your gem.
+
+Second, Crackin depends on your version file having a structure similar to below.
+Obviously you will need to change the module names to match your gems, but the structure
+should be similar. Crackin matches the MAJOR, MINOR, TINY and TAG tokens and replaces
+those lines with the correct values when doing a release.
+
+module Crackin
+  module Version
+    MAJOR = 0
+    MINOR = 1
+    TINY = 0
+    TAG = 'beta0'
+    LIST = [MAJOR, MINOR, TINY, TAG]
+    STRING = LIST.compact.join(".")
+  end
+end
+        VERSION
       end
     end
     subcommand 'status', 'show status information' do
@@ -68,14 +97,17 @@ module Crackin
       status = Crackin::Status.new
       status.state == wanted
     end
+
     def release_start(type, real)
       raise "cannot start release when you're not in state == development" unless state('development')
       Crackin::Release.new(type).start(real: real)
     end
+
     def release_rollback(real)
       raise "cannot rollback when you're not in state == releasing" unless state('releasing')
       Crackin::Release.new(:none).rollback(real: real)
     end
+
     def release_finish(real)
       raise "cannot finish when you're not in state == releasing" unless state('releasing')
       Crackin::Release.new(:none).finish(real: real)
@@ -87,6 +119,6 @@ begin
   Crackin::Command.run
 rescue => e
   puts "error: #{e.message}"
-  e.backtrace.each {|l| puts "  #{l}"}
+  e.backtrace.each { |l| puts "  #{l}" }
   exit 1
 end

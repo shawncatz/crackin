@@ -109,6 +109,11 @@ module Crackin
         puts "gem credentials are not saved, you must run 'gem push pkg/#{@config['name']}-#{@version.name}.gem' to set them"
         return
       end
+      # make sure all files are included
+      actions << {
+          name: "add files",
+          do: ->{ @source.add(all: true) },
+      }
       # commit
       actions << {
           name: "commit version and changelog",

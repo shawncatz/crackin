@@ -103,7 +103,7 @@ module Crackin
         @git.tags
       end
 
-      def destroy(name)
+      def delete(name)
         @git.tag_delete(name)
       end
     end

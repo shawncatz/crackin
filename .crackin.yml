@@ -1,0 +1,14 @@
+---
+crackin:
+  name: crackin
+  scm: git
+  changelog: CHANGELOG.md
+  branch:
+    production: master
+    development: develop
+  status:
+    verbose: true
+  version: lib/crackin/version.rb
+  build:
+    command: rake build
+    after: []

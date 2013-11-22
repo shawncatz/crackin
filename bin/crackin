@@ -1,0 +1,92 @@
+#!/usr/bin/env ruby
+
+require 'rubygems'
+require 'clamp'
+require 'crackin'
+
+module Crackin
+  class Command < Clamp::Command
+    option %w{-c --config}, '[CONFIG]', 'configuration file', environment_variable: 'CRACKIN_CONFIG', default: './.crackin.yml' do |config|
+      Crackin::Config.load(config)
+    end
+    subcommand 'init', 'intialize a directory for use with crackin' do
+      def execute
+        data = {crackin: Crackin::Config.defaults}.deep_stringify_keys
+        File.open(".crackin.yml", "w+") {|f| f.write(data.to_yaml)}
+      end
+    end
+    subcommand 'status', 'show status information' do
+      def execute
+        puts Crackin::Status.new
+      end
+    end
+    subcommand 'release', 'commands for doing releases' do
+      option %w{-n --dryrun}, :flag, 'mock commands', default: false
+      subcommand 'major', 'major release' do
+        def execute
+          release_start(:major, dryrun?)
+        end
+      end
+      subcommand 'minor', 'minor release' do
+        def execute
+          release_start(:minor, dryrun?)
+        end
+      end
+      subcommand 'tiny', 'tiny release' do
+        def execute
+          release_start(:tiny, dryrun?)
+        end
+      end
+      subcommand 'rc', 'release candidate release' do
+        def execute
+          release_start(:rc, dryrun?)
+        end
+      end
+      subcommand 'beta', 'beta release' do
+        def execute
+          release_start(:beta, dryrun?)
+        end
+      end
+      subcommand 'alpha', 'alpha release' do
+        def execute
+          release_start(:alpha, dryrun?)
+        end
+      end
+      subcommand 'rollback', 'rollback release changes' do
+        def execute
+          release_rollback(dryrun?)
+        end
+      end
+      subcommand 'finish', 'complete release process' do
+        def execute
+          release_finish(dryrun?)
+        end
+      end
+    end
+
+    def state(wanted)
+      status = Crackin::Status.new
+      status.state == wanted
+    end
+    def release_start(type, real)
+      raise "cannot start release when you're not in state == development" unless state('development')
+      Crackin::Release.new(type).start(real: real)
+    end
+    def release_rollback(real)
+      raise "cannot rollback when you're not in state == releasing" unless state('releasing')
+      Crackin::Release.new(:none).rollback(real: real)
+    end
+    def release_finish(real)
+      raise "cannot finish when you're not in state == releasing" unless state('releasing')
+      Crackin::Release.new(:none).finish(real: real)
+    end
+  end
+end
+
+begin
+  Crackin::Command.run
+rescue => e
+  puts "error: #{e.message}"
+  e.backtrace.each {|l| puts "  #{l}"}
+  exit 1
+end

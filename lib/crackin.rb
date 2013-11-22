@@ -1,0 +1,11 @@
+require 'crackin/version'
+require 'crackin/scm'
+require 'crackin/config'
+require 'crackin/status'
+require 'crackin/version_file'
+require 'crackin/changelog'
+require 'crackin/release'
+
+require 'crackin/ext/git/base'
+require 'crackin/ext/git/lib'
+require 'crackin/ext/core/hash'

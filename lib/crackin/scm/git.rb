@@ -67,6 +67,10 @@ module Crackin
         @git.branch(Shellwords.escape(name)).delete
       end
 
+      def pull
+        @git.pull
+      end
+
       def push
         @git.push
       end

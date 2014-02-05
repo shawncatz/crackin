@@ -8,7 +8,9 @@ module Crackin
       def initialize(config={})
         super
         #@git = ::Git.open(@options[:working], log: Logger.new(STDOUT))
-        @git = ::Git.open(@options[:working])
+        o = {}
+        o[log] = Logger.new(STDOUT) if @options[:debug]
+        @git = ::Git.open(@options[:working], o)
       end
 
       def add(options={})

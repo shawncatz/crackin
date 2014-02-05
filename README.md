@@ -67,7 +67,7 @@ Use the `crackin status` command to get more information. The general idea is:
    * push gem
    * merge master to develop
    * delete release branch (this should be configurable)
-   * push develop (not working currently)
+   * push develop
 
 ## Files
 
@@ -79,6 +79,7 @@ An example of the configuration file. _Subject to change_
 ---
 crackin:
   name: crackin
+  debug: false
   version: lib/crackin/version.rb
   scm: git
   changelog: CHANGELOG.md

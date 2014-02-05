@@ -183,15 +183,20 @@ module Crackin
           do: -> { @source.merge_from(@config['branch']['production']) },
           undo: -> { @source.uncommit },
       }
+      # push
+      actions << {
+          name: "source push",
+          do: -> { @source.push },
+      }
       # delete release branch
       actions << {
           name: "delete release branch",
           do: -> { @source.delete_branch("crackin_#{@version.name}") },
       }
-      # push
+      # delete release branch
       actions << {
-          name: "source push",
-          do: -> { @source.push },
+          name: "change to development branch",
+          do: -> { @source.change_branch(@config['branch']['development']) },
       }
       actions
     end

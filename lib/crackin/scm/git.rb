@@ -9,8 +9,8 @@ module Crackin
         super
         #@git = ::Git.open(@options[:working], log: Logger.new(STDOUT))
         o = {}
-        o[log] = Logger.new(STDOUT) if @options[:debug]
-        @git = ::Git.open(@options[:working], o)
+        o['log'] = Logger.new(STDOUT) if config['debug']
+        @git = ::Git.open(@options[:working], o.deep_symbolize_keys)
       end
 
       def add(options={})

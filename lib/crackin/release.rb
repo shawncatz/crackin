@@ -65,6 +65,13 @@ module Crackin
 
     def start_actions
       actions = []
+      # update current branch
+      actions << {
+          name: "update branch",
+          do: -> { @source.pull },
+          undo: -> { @source.change_branch(@config['branch']['development']) },
+          if: @current == @config['branch']['development']
+      }
       # change branch
       actions << {
           name: "change to production branch",

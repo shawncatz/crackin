@@ -3,7 +3,7 @@ module Crackin
     MAJOR = 0
     MINOR = 1
     TINY = 1
-    TAG = 'alpha0'
+    TAG = 'alpha1'
     LIST = [MAJOR, MINOR, TINY, TAG]
     STRING = LIST.compact.join(".")
   end

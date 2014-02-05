@@ -1,5 +1,8 @@
 ### Changelog
 
+##### v0.1.1.alpha1:
+* deleting a branch forces us to change to master, so change back to development after delete
+
 ##### v0.1.1.alpha0:
 * disable verbose status
 * better debug handling for git

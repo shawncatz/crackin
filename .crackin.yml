@@ -8,7 +8,7 @@ crackin:
     production: master
     development: develop
   status:
-    verbose: true
+    verbose: false
   version: lib/crackin/version.rb
   build:
     command: rake build

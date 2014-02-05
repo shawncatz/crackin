@@ -73,8 +73,8 @@ module Crackin
         @git.pull
       end
 
-      def push
-        @git.push
+      def push(remote=@git.remote, branch=current_branch)
+        @git.push(remote, branch)
       end
 
       def push_tags(remote=@git.remote, branch=current_branch)

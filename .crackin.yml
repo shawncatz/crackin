@@ -1,7 +1,7 @@
 ---
 crackin:
   name: crackin
-  debug: true
+  debug: false
   scm: git
   changelog: CHANGELOG.md
   branch:

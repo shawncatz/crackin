@@ -1,5 +1,8 @@
 ### Changelog
 
+##### v0.1.1:
+* turn off debug
+
 ##### v0.1.1.alpha2:
 * push defaults to origin/master. override this to default to current branch
 
